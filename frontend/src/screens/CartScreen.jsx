@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -13,7 +12,7 @@ import {
 } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import Message from "../components/Message";
-import { addToCart, removeFromCart } from "../slices/cartSlice";
+import { addToCart, removeFromCart,clearCart } from "../slices/cartSlice";
 
 const CartScreen = () => {
   const navigate = useNavigate();
@@ -21,8 +20,6 @@ const CartScreen = () => {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
-
-  const [showAlert, setShowAlert] = useState(false);
 
   const addToCartHandler = async (product, qty) => {
     dispatch(addToCart({ ...product, qty }));
@@ -32,13 +29,10 @@ const CartScreen = () => {
   };
 
   const checkoutHandler = () => {
-    setShowAlert(true); // Show the custom alert
-  };
+      dispatch(clearCart());
+      navigate("/Address");
+};
 
-  const handleAlertConfirm = () => {
-    setShowAlert(false); // Hide alert
-    navigate("/");
-  };
 
   return (
     <Row>
@@ -112,28 +106,9 @@ const CartScreen = () => {
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
-                Place Order
+                 Proceed to Checkout
               </Button>
-              {showAlert && (
-                <div
-                  style={{
-                    position: "fixed",
-                    top: "30%",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    background: "white",
-                    padding: "20px",
-                    boxShadow: "0 0 10px rgba(0,0,0,0.3)",
-                    borderRadius: "8px",
-                    zIndex: 1000,
-                    width: "300px",
-                    textAlign: "center",
-                  }}
-                >
-                  <p>Your Order has been placed successfully</p>
-                  <button onClick={handleAlertConfirm}>OK</button>
-                </div>
-              )}
+             
             </ListGroup.Item>
           </ListGroup>
         </Card>
