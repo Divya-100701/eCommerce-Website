@@ -19,6 +19,7 @@ import CartScreen from './screens/CartScreen';
 import AddressScreen from './screens/AddressScreen';
 import SuccessScreen from "./screens/SuccessScreen";
 import CashOnDeliveryScreen from "./screens/CashOnDeliveryScreen";
+import SignInScreen from './screens/SignInScreen';
 
 
 const router = createBrowserRouter(
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
       <Route path='/address' element={<AddressScreen />} />
       <Route path='/cod' element={<CashOnDeliveryScreen />} />
       <Route path="/success" element={<SuccessScreen />} />
+      <Route path='/login' element={<SignInScreen />} /> 
 
     </Route>
   )

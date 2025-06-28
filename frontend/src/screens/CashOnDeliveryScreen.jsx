@@ -1,13 +1,16 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Card, ListGroup, Button } from "react-bootstrap";
-import { clearCart } from "../slices/cartSlice";
+import { useDispatch } from 'react-redux';
+import { clearCart } from '../slices/cartSlice';
+
 
 const CashOnDeliveryScreen = () => {
   const { cartItems, shippingAddress } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const totalPrice = cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2);
 
@@ -15,8 +18,8 @@ const CashOnDeliveryScreen = () => {
     // Simulate saving order (you can add backend call here later)
     console.log("Order placed:", { cartItems, shippingAddress, totalPrice });
 
-    dispatch(clearCart());
     navigate("/success");
+    dispatch(clearCart());
   };
 
   return (

@@ -1,17 +1,20 @@
-import {createSlice} from '@reduxjs/toolkit';
-import { updateCart } from '../utils/cartUtils';
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {cartItems: []};
-
-
+const initialState = {
+  cartItems: localStorage.getItem('cartItems') 
+    ? JSON.parse(localStorage.getItem('cartItems')) 
+    : [],
+  shippingAddress: localStorage.getItem('shippingAddress') 
+    ? JSON.parse(localStorage.getItem('shippingAddress')) 
+    : {},
+};
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers:{
-    addToCart: ( state, action ) =>{
+  reducers: {
+    addToCart: (state, action) => {
       const item = action.payload;
-
       const existItem = state.cartItems.find((x) => x._id === item._id);
 
       if (existItem) {
@@ -22,29 +25,32 @@ const cartSlice = createSlice({
         state.cartItems = [...state.cartItems, item];
       }
 
-      return updateCart(state);
-
+      // Save updated cart to localStorage
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
+
     removeFromCart: (state, action) => {
       const itemId = action.payload;
       state.cartItems = state.cartItems.filter((x) => x._id !== itemId);
-      return updateCart(state);
+
+      // Save updated cart to localStorage
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
 
     saveShippingAddress: (state, action) => {
       state.shippingAddress = action.payload;
-      localStorage.setItem("shippingAddress", JSON.stringify(action.payload));
+      localStorage.setItem('shippingAddress', JSON.stringify(action.payload));
     },
-
 
     clearCart: (state) => {
       state.cartItems = [];
-      localStorage.removeItem("cartItems");
+      localStorage.removeItem('cartItems');
     },
 
+    
   },
 });
 
-export const { addToCart, removeFromCart, saveShippingAddress,clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, saveShippingAddress, clearCart} = cartSlice.actions;
 
 export default cartSlice.reducer;
